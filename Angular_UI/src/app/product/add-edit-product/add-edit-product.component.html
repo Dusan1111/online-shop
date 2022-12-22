@@ -1,0 +1,185 @@
+<div class="container">
+    <form name="form" [formGroup]='addEditForm' novalidate>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <!-- <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>    -->
+                    <label for="productName" class="col-sm-4 col-form-label">Name</label>
+                    <div class="col-sm">
+                        <input type="text" class="form-control" [(ngModel)]="name" placeholder="Enter product name"
+                            formControlName="productName" id="productName" aria-describedby="validationServer03Feedback"
+                            required [ngClass]="{ 'is-invalid': productName.errors && (addEditFormSubmitted || productName.dirty || productName.touched) , 
+                              'is-valid': !productName.errors && (productName.dirty || productName.touched)}">
+
+                        <div id="validationDiv"
+                            *ngIf="productName && productName.errors?.required && (addEditFormSubmitted || productName.dirty || productName.touched)">
+                            Product name is reqruired!
+                        </div>
+                        <div id="validationDiv"
+                            *ngIf="productName && productName.errors?.maxlength && (addEditFormSubmitted || productName.dirty || productName.touched)">
+                            Product name can't be longer than 20 characters!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="productPrice" class="col-sm-4 col-form-label">Price</label>
+                    <div class="col-sm">
+                        <input type="number" class="form-control" [(ngModel)]="price" placeholder="Enter product price"
+                            formControlName="productPrice" id="productPrice"
+                            aria-describedby="validationServer03Feedback" required [ngClass]="{ 'is-invalid': productPrice.errors && (addEditFormSubmitted || productPrice.dirty || productPrice.touched) , 
+                            'is-valid': !productPrice.errors && (productPrice.dirty || productPrice.touched)}">
+                        <div>
+                            <div id="validationDiv"
+                                *ngIf="productPrice && productPrice.errors?.required && (addEditFormSubmitted || productPrice.dirty || productPrice.touched)">
+                                Product price is reqruired!
+                            </div>
+                            <div id="validationDiv"
+                                *ngIf="productPrice && productPrice.errors?.min && (addEditFormSubmitted || productPrice.dirty || productPrice.touched)">
+                                Product price must be greater than 0!
+                            </div>
+                            <div id="validationDiv"
+                                *ngIf="productPrice && productPrice.errors?.pattern && (addEditFormSubmitted || productPrice.dirty || productPrice.touched)">
+                                Product price must be a numberic value!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div  *ngIf="ProductCategories$ | async as productCategories">
+                    <div class="form-group row">
+                        <label for="productCategory" class="col-sm-4 col-form-label">Category</label>
+                        <div class="col-sm">
+                            <select class="form-select" formControlName="productCategory"
+                                [(ngModel)]="selectedProductCategoryId" (change)="onChangeCategory($event)"
+                                aria-describedby="validationServer03Feedback"
+                                [ngClass]="{ 'is-invalid': productCategory.errors && (addEditFormSubmitted || productCategory.dirty || productCategory.touched) , 
+                                'is-valid': !productCategory.errors && (productCategory.dirty || productCategory.touched)}">
+                                <option value="" style="text-align: center;">-- Select category --</option>
+                                <option value="{{category.id}}" *ngFor="let category of productCategories">
+                                    {{category.name}}
+                                </option>
+                            </select>
+                            <div id="validationDiv"
+                                *ngIf="productCategory && productCategory.errors?.required && (addEditFormSubmitted || productCategory.dirty || productCategory.touched)">
+                                Product category is reqruired!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="productDescription" class="col-sm-4 col-form-label">Description</label>
+                    <div class="col-sm">
+                        <textarea class="form-control" formControlName="productDescription" [(ngModel)]="description"
+                            rows="5" placeholder="Add product description"
+                            aria-describedby="validationServer03Feedback">
+                         </textarea>
+                        <div id="validationDiv" *ngIf="productDescription && productDescription.errors?.maxlength">
+                            Description can't be longer than 250 characters!
+                        </div>
+                    </div>
+                </div>
+
+                <!-----  Discount ----->
+                <div class="form-group row">
+                    <label for="select" class="col-sm-4 col-form-label"> Discount type</label>
+
+                    <div class="col-sm-2">
+                        <button class="btn btn-outline-success" style="font-size: 12px;"
+                            (click)="addDiscountToProduct()">+</button>
+                    </div>
+
+                    <div class="col-sm-6">
+
+                        <select id="select" class="form-select" aria-describedby="validationServer03Feedback"
+                            (change)="onChangeDiscount($event)" style="font-size: 12px;">
+                            <option value="" style="text-align: center;">-- Select discount --</option>
+                            <option value="{{discount.name}}" *ngFor="let discount of DiscountList">
+                                {{discount.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label for="percentage" class="col-sm-4 col-form-label"> Discount %</label>
+                    <div class="col-sm">
+                        <input type="text" id="percentage" class="form-control" style="font-size: 12px;"
+                            formControlName="productDiscount" [(ngModel)]="discount" placeholder="%" id="select"
+                            aria-describedby="validationServer03Feedback" required>
+                    </div>
+                </div>
+                <table class="table" style="font-size: 12px;" *ngIf="ProductDiscounts.length > 0">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Discount</th>
+                            <th scope="col">Percent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let discount of ProductDiscounts; let i = index">
+                            <td>{{discount.name}}</td>
+                            <td>{{discount.discountPercentage}}</td>
+                            <td>
+                                <button class="btn btn-danger" style="font-size: 12px;" (click)="removeDiscount(i)">
+                                    Remove
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+
+                    </tbody>
+                </table>
+
+                <!-- --------- -->
+
+            </div>
+            <div class="col-md-6 col-sm-2">
+                <div class="form-group row">
+                    <img [src]="imagePath" name="detailImagePath" height="350px" width="200px;">
+
+                    <row>
+                        <input type="file" (change)="onImageUpload($event)" class="mt-2">
+                        <label aria-describedby="validationServer03Feedback">
+                            Current image:
+                            <label style="font-weight: bold;">{{imageName}} </label>
+                        </label>
+                    </row>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content:right">
+            <button (click)="addProduct()" *ngIf="product.id==0" type="submit" class="btn btn-outline-success mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path
+                        d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+                </svg>
+                Save
+            </button>
+            <button (click)="updateProduct()" [disabled]="addEditForm.invalid" *ngIf="product.id!=0" type="submit"
+                class="btn btn-outline-success mr-2">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path
+                        d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+                </svg>
+                Save
+            </button>
+            <button class="btn btn-outline-danger mr-2" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,96 @@
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+            role="tab" aria-controls="home" aria-selected="true">Details</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+            role="tab" aria-controls="profile" aria-selected="false">Reviews</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#addReview" type="button"
+            role="tab" aria-controls="profile" aria-selected="false">Add review</button>
+    </li>
+
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="row">
+            <div class="col-md-6 col-md-6">
+                <div class="form-group row">
+                    <label for="detailName">Name: <label id="labelDetail">{{detailName}}</label> </label>
+                </div>
+
+                <div class="form-group row">
+                    <label for="detailPrice">Price: <label id="labelDetail">{{detailPrice}}</label> </label>
+                </div>
+
+                <div class="form-group row">
+                    <label for="productCategory">Category: <label
+                            id="labelDetail">{{product.productCategory.name}}</label> </label>
+                </div>
+                <div class="form-group row">
+                    <label for="productDescription">Description: <label id="labelDetail">{{detailDescription}}</label>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-2">
+                <div class="form-group row">
+                    <div class="ml-3 bd-highlight">
+                        <img [src]="detailImagePath" height="250" width="200px;" name="detailImagePath">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="row align-items-center">
+            <div class="col-sm-2" style="margin-left: 10px;">
+                <h1 *ngIf="product.rating != 0">
+                    <b>{{product.rating}}</b>
+                </h1>
+            </div>
+            <div class="col-sm" style="margin-bottom: 10px;">
+                <ng-template #t let-fill="fill">
+                    <span class="star" [class.full]="fill === 100">
+                        <span class="half" [style.width.%]="fill">
+                            &hearts;
+                        </span>
+                        &hearts;
+                    </span>
+                </ng-template>
+
+                <ngb-rating [(rate)]="product.rating" [starTemplate]="t" [readonly]="true" [max]="5"
+                    hover="{{product.rating}}"></ngb-rating>
+            </div>
+            <div class="col-sm">
+                <h6> Based on <b> {{ product.productReviews.length}} </b>reviews</h6>
+            </div>
+        </div>
+        <div>
+            <div class="card text-primary bg-outline-primary mb-3" *ngFor="let review of productReviewList">
+                <h6 class="card-header" >{{review.userName}}</h6>
+                <div class="card-body">
+                    <ng-template #t let-fill="fill" >
+                        <span class="star" [class.full]="fill === 100">
+                            <span class="half" [style.width.%]="fill">
+                                &hearts;
+                            </span>
+                            &hearts;
+                        </span>
+                    </ng-template>
+
+                    <ngb-rating [(rate)]="review.rating" [starTemplate]="t" [readonly]="true" [max]="5"
+                        hover="{{review.rating}}"></ngb-rating>
+                    <h6>{{review.description}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="addReview" role="tabpanel" aria-labelledby="profile-tab">
+        <app-add-product-review [productId]="product.id"> </app-add-product-review>
+    </div>
+
+</div>

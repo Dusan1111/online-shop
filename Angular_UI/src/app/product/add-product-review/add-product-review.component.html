@@ -1,0 +1,41 @@
+
+      <div class="form-group row">
+        <label for="rating" class="col-sm-4 col-form-label">Rating</label>
+        <div class="col-sm">
+        <ng-template #t let-fill="fill" id="rating">
+            <span class="star" [class.full]="fill === 100" style="cursor: pointer;" >
+              <span class="half" [style.width.%]="fill">
+                  &hearts;
+              </span>
+              &hearts;
+            </span>
+          </ng-template>
+          <ngb-rating [(rate)]="productReview.rating" [starTemplate]="t" [readonly]="false" [max]="5" hover="{{productReview.rating}}">
+              
+          </ngb-rating>
+          <pre >Rate: <b>{{productReview.rating}}</b></pre>
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <label for="productDescription" class="col-sm-4 col-form-label">Description</label>
+        <div class="col-sm">
+            <textarea class="form-control" [(ngModel)]="productReview.description"
+                rows="5" placeholder="Add review description"
+                aria-describedby="validationServer03Feedback">
+             </textarea>
+            <!-- <div id="validationDiv" *ngIf="productDescription && productDescription.errors?.maxlength">
+                Description can't be longer than 250 characters!
+            </div> -->
+        </div>
+    </div>
+    <div style="display: flex; justify-content:right">
+        <button (click)="saveProductReview()" type="submit" class="btn btn-outline-success mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg"
+                viewBox="0 0 16 16">
+                <path
+                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+            </svg>
+            Save
+        </button>
+    </div>

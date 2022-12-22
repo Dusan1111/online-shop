@@ -1,0 +1,31 @@
+<br />
+<br />
+    <div class="row" style="width: 60%; margin-left: 320px; float:left; position: absolute; left: 0px;">
+        <button class="btn btn-success btn" data-bs-dismiss="modal" style="width: 150px;" routerLink="/orders" >
+            Back
+        </button>
+        <p> </p>
+        <label style="font-size: 20px;"> Order ID: <label style="font-weight: bold;"> {{ order.id}} </label> </label>
+    </div>
+
+<p> </p>
+
+<table class="table caption-top" id="cartTable" style="width: 1000px; margin-left: 320px; position:absolute; margin-top: 75px; left: 0px;">
+    <caption>List of people</caption>
+    <tbody>
+        <tr *ngFor="let orderItem of order.orderItems" style="font-size: small;font-weight: bold;">
+            <!-- <td width="50px">{{ orderItem.product.name }}</td> -->
+            <td width="50px">
+                <img width="40" height="40" [src]="getImagePath(orderItem.product.imageName)" />
+            </td>
+            <td width="30px">{{ orderItem.product.name }}</td>
+            <td width="30px">{{ orderItem.price }} din x {{ orderItem.ammount }}</td>
+            <td width="30px"> = {{ orderItem.ammount * orderItem.price | number : '1.2-2'}} din</td>
+
+        </tr>
+       
+    </tbody>
+    <div class="row" style="margin-bottom: 5px;" id="priceText">
+            <label >Total: {{ order.total | number : '1.2-2' }} din</label>
+    </div>
+</table>

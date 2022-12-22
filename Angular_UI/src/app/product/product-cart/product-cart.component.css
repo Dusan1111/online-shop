@@ -1,0 +1,210 @@
+.btn-circle.btn-sm {
+    width: 30px;
+    height: 30px;
+    padding: 0px 0px;
+    border-radius: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+.cartLabel{
+    height: 25px;
+    font-size: medium;
+    font-weight: bold;
+}
+.cartPriceUpDown{
+    margin-left: 10px;
+    width: 40px;
+    font-size: medium;
+    font-weight: bold;
+}
+.box {
+    position: relative;
+    display: inline-block;
+    top: 20px;
+    margin-right: 20px;
+  }
+
+  .index {
+    background: none repeat scroll 0 red;
+    border: 2px solid #ffffff;
+    border-radius: 100%;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 5px 15px;
+    position: absolute;
+    right: -10px;
+    top: -12px;
+    margin-top: 20px
+  }
+
+  #vertical-menu-cart {
+    height: auto;
+    display: flex;
+    width: 0%;
+    position: absolute;
+    z-index: 1;
+    top: 1;
+    right: 0;
+    background-color:lightgrey;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 200;
+  }
+
+  #vertical-menu-cart a {
+    /* padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s; */
+  }
+  
+  #vertical-menu-cart a:hover {
+    color: #f1f1f1;
+  }
+  
+  #vertical-menu-cart .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    #vertical-menu-cart {padding-top: 15px;}
+    #vertical-menu-cart a {font-size: 18px;}
+  }
+
+  #priceText{
+    font-weight: bold;
+    right: 0px;
+    font-size: 20px;
+    position: relative;
+    text-align: right;
+    width: 80%;
+    float: left;
+  }
+
+  #priceTextPayPal{
+    font-weight: bold;
+    right: 0px;
+    font-size: 20px;
+    position: relative;
+    text-align: right;
+    width: 110%;
+    float: left;
+  }
+
+  #btContinueShopping{
+    font-weight: bold;
+    right: 0px;
+    position: relative;
+    width: 100%;
+    float: left;
+  }
+  
+  #priceTextHeader{
+    font-weight: bold;
+    right: 0px;
+    font-size: 15px;
+    position: relative;
+    color: red;
+  }
+
+  .btn-sm {
+    font-weight: bold;
+    left: 0px;
+    font-size: 15px;
+    position: relative;
+  }
+
+  .btn-rnd {
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    position: absolute;
+  }
+
+  .scrollit {
+    overflow:scroll;
+    min-height:200px;
+    max-height: 500px;
+}
+
+  #priceTextButton{
+    font-weight: bold;
+    right: 0px;
+    font-size: 8px;
+    position: relative;
+    color: red;
+  }
+
+  form {
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 50px;
+  }
+  
+  .value-button {
+    display: inline-block;
+    border: 1px solid #ddd;
+    margin: 0px;
+    width: 30px;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 11px 0;
+    background: #eee;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .value-button:hover {
+    cursor: pointer;
+  }
+  
+  form #decrease {
+    margin-right: -4px;
+    border-radius: 8px 0 0 8px;
+  }
+  
+  form #increase {
+    margin-left: -4px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  form #remove {
+    margin-left: 10px;
+    border-radius: 0 8px 8px 0;
+
+
+  }
+  
+  form #input-wrap {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  input#number {
+    text-align: center;
+    border: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin: 0px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }

@@ -1,0 +1,36 @@
+    
+    .btn {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    .div-center {
+        margin: auto;
+        width: 50%;
+        margin-left: 350px;
+        margin-top: 20px;
+      }
+      #sortButton { 
+          outline:none;
+          border-style: none;
+      }
+      /* Pagination links */
+      .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+      }
+      
+      /* Style the active/current link */
+      .pagination a.active {
+        background-color: dodgerblue;
+        color: white;
+      }
+      /* Add a grey background color on mouse-over */
+      .pagination a:hover:not(.active) {background-color: #ddd;}
+      
+      #addNewProduct{
+          margin-top: 40px;
+          margin-bottom: 0px;
+      }

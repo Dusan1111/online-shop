@@ -1,0 +1,156 @@
+<br /><br />
+<br />
+
+
+<div class="row">
+  <!-- !-- Button trigger modal -->
+  
+  <div class="col-sm-2" >
+    <button type="button" id="addNewProductCategoruy" class="btn btn-primary" data-bs-toggle="modal"
+    data-bs-target="#staticBackdrop" (click)="addClick()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill"
+      viewBox="0 0 16 16">
+      <path
+        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z" />
+    </svg>
+    Add category
+    </button>
+  </div>
+
+  <div class="col-sm-5">
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">Sort by:</label>
+      <div class="col-sm-8">
+        <select class="form-select" (change)="onChangeSort($event)">
+          <option value=""> --Choose sort category-- </option>
+          <option value="{{sortOption.name}}" *ngFor="let sortOption of SortOptions">
+            {{sortOption.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="form-group row">
+      <label class="col-sm-4 col-form-label">Show:</label>
+      <div class="col-sm-6">
+        <select (change)="tableData($event)" class="custom-select">
+          <option *ngFor="let size of tableSizesArr" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add-Edit Modal -->
+<div class="modal hide fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="false" >
+  <div class="modal-dialog modal-dialog-centered modal-m10">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #007BFF; color: white;">
+        <h5 class="modal-title" id="staticBackdropLabel">{{ModalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeClick()">
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-product-category [productCategory]="productCategory" [closeDialog] = "closeDialog" *ngIf="ActivateAddEditProductCategoryComp">
+        </app-add-edit-product-category>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-m10">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: red; color: white;">
+        <h5 class="modal-title" id="deleteModalLabel">Delete</h5>
+        <button style=" background-color: white;" type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close" (click)="closeClick()">
+        </button>
+      </div>
+      <div class="modal-body" style="font-weight: bold;font-size: medium;" *ngIf="!deletedSuccessfuly">
+        <p>Are you sure you want to delete '{{productCategoryName}}' category?.</p>
+      </div>
+      <div class="modal-footer" *ngIf="!deletedSuccessfuly">
+        <button type="button" class="btn btn-danger" (click)="deleteCategory()">Delete</button>
+        <button type="button" class="btn btn-info" data-bs-dismiss="modal">No</button>
+      </div>
+
+      <div class="modal-body" style="font-weight: bold;font-size: medium;" *ngIf="deletedSuccessfuly">
+        <p>Cateogory '{{productCategoryName}}' deleted successfully.</p>
+      </div>
+      <div class="modal-footer" *ngIf="deletedSuccessfuly">
+        <button type="button" class="btn btn-primary btn-lg btn-block" (click)="deleteCategory()" data-bs-dismiss="modal">Ok</button>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" fill="currentColor" class="bi bi-search"
+        viewBox="0 0 16 16">
+        <path
+          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+      </svg>
+    </span>
+  </div>
+  <input id="myInput" [(ngModel)]="SearchTerm" class="form-control" placeholder="Search by name" />
+</div>
+
+<div *ngIf="(sortedAndFilteredList$ | searchPipe: SearchTerm) |async as productCategories">
+<table class="table table-hover" id="productCategoryTable">
+  <thead>
+    <tr>
+      <th>Product category</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- //For petlja na osnovu Product liste is ts fajle (code behind-a) -->
+    <tr *ngFor="let productCategory of productCategories | paginate : {
+            itemsPerPage: tableSize,
+            currentPage: page,
+            totalItems: count
+          };">
+      <td>{{ productCategory.name }}</td>
+      <td>
+        <button type="button" class="btn btn-outline-success mr-1" data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop" (click)="editClick(productCategory)"
+          databs-dismiss-callback="handleCloseEvent()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="20" fill="currentColor" class="bi bi-pencil"
+            viewBox="0 0 16 16" style="display: flex; align-items: center; justify-content: center;" style="display: flex; align-items: center; justify-content: center;"> 
+            <path
+              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+          </svg>
+          <!-- Edit -->
+        </button>
+        <button type="button" class="btn btn-outline-danger mr-1" data-bs-toggle="modal" data-bs-target="#deleteModal"
+          (click)="deleteClick(productCategory)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="20" fill="currentColor" class="bi bi-trash"
+            viewBox="0 0 16 16" style="display: flex; align-items: center; justify-content: center;">
+            <path
+              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+            <path fill-rule="evenodd"
+              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+          </svg>
+          <!-- Delete -->
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  <div class="d-flex justify-content-center">
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="tabSize($event)">
+    </pagination-controls>
+  </div>
+</table>
+</div>

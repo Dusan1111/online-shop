@@ -1,0 +1,19 @@
+<h1 style="text-align: center;"> Online anual profit chart </h1>  
+
+<select class="form-select" (change)="graphYearSelected($event)">
+  <option value="{{2020}}">2020</option>
+  <option value="{{2021}}" selected>2021</option>
+  <option value="{{2022}}">2022</option>
+</select>
+    
+<div style="display: block;">
+  <canvas baseChart width="1000" height="300"
+    [datasets]="lineChartData"
+    [labels]="lineChartLabels"
+    [options]="lineChartOptions"
+    [legend]="lineChartLegend"
+    [chartType]="lineChartType"
+    [plugins]="lineChartPlugins"
+    [colors]="lineChartColors" >
+  </canvas>
+</div>

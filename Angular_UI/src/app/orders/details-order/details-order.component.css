@@ -1,0 +1,17 @@
+#priceText{
+    font-weight: bold;
+    right: 0;
+    font-size: 20px;
+    position: absolute;
+    text-align: right;
+    width: 60%;
+    float: right;
+  }
+  
+  #btContinueShopping{
+    font-weight: bold;
+    right: 0px;
+    position: relative;
+    width: 100%;
+    float: left;
+  }

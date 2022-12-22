@@ -1,0 +1,82 @@
+<div class="nav flex-column nav-pills" id="vertical-menu-cart" role="tablist" aria-orientation="vertical" 
+style="margin-right: auto;" *ngIf="productsInCart.length > 0">
+        <div class="collapse" id="navbarToggleExternalContent">
+            <div class="scrollit">
+            <table class="table" id="cartTable">
+                <tbody>
+                    <tr *ngFor="let cartProduct of productsInCart; let i = index" style="font-size: small;font-weight: bold;">
+                        <td width="70px">{{ cartProduct.name }}</td>
+                        <td>
+                            <img width="40" height="40" [src]="getImagePath(cartProduct.imageName)" />
+                        </td>
+                        <td *ngIf="cartProduct.discountedPrice == 0" width="30px">{{ cartProduct.price }}</td>
+                        <td *ngIf="cartProduct.discountedPrice != 0" width="30px">{{ cartProduct.discountedPrice }}</td>
+    
+                        <td>
+                            <div class="input-group">
+                                <button type="button" class="value-button" id="decrease" (click)="decreaseAmmount(cartProduct)" value="Decrease Value">-</button>
+                                <input type="number" min="1" id="number" value="{{cartProduct.ammount}}"/>
+                                <button type="button" class="value-button" id="increase" (click)="increaseAmmount(cartProduct)" value="Increase Value">+</button>
+                                <button id="remove" class="btn btn-danger" (click)="removeFromCartClick(i)">x</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+                <label id="priceText"> Total: {{totalCartPrice}} din</label>
+            <button data-bs-toggle="modal" data-bs-target="#paymentModal" class="btn btn-success btn-lg btn-block"
+                (click)="showPaymentWindow()">
+                Confirm order
+            </button>
+        </div>
+    </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="paymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg2">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title bg-primary" id="paymentModalLabel" style="color: white;">Choose payment method
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeClick()">
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover" id="cartTable">
+                    <tbody>
+                        <tr *ngFor="let cartProduct of productsInCart" style="font-size: small;font-weight: bold;">
+                            <td width="50px">{{ cartProduct.name }}</td>
+                            <td width="50px"> 
+                                <img width="40" height="40" [src]="getImagePath(cartProduct.imageName)" />
+                            </td>
+                            <td *ngIf="cartProduct.discountedPrice == 0" width="30px">{{ cartProduct.price }} din x {{ cartProduct.ammount }}</td>
+                            <td *ngIf="cartProduct.discountedPrice != 0" width="30px">{{ cartProduct.discountedPrice }} din x {{ cartProduct.ammount }}</td>
+
+                            <td *ngIf="cartProduct.discountedPrice == 0" width="30px"> = {{ cartProduct.ammount * cartProduct.price  | number : '1.2-2'}} din</td>
+                            <td *ngIf="cartProduct.discountedPrice != 0" width="30px"> = {{ cartProduct.ammount * cartProduct.discountedPrice  | number : '1.2-2'}} din</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="row" style="margin-bottom: 5px;">
+                    <div class="col-sm-6">
+                        <label width="" id="priceText" width="50px">Total: {{ totalCartPrice | number : '1.2-2' }} din</label>
+                    </div>
+                    <div class="col-sm">
+                        <button id="btContinueShopping" class="btn btn-outline-success btn-sm " >
+                            Continue shopping
+                        </button>
+                    </div>
+                  </div >
+
+                <app-pay-pal *ngIf="ActivatePayPalComp" [totalPrice]="totalCartPrice"></app-pay-pal>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,124 @@
+<br />
+<br />
+<br />
+  <div class="row">
+    <!-- !-- Button trigger modal -->
+    
+    <div class="col-sm-2" >
+  
+    </div>
+  
+    <div class="col-sm-5">
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Sort by:</label>
+        <div class="col-sm-8">
+          <select class="form-select" (change)="onChangeSort($event)">
+            <option value=""> --Choose sort category-- </option>
+            <option value="{{sortOption.name}}" *ngFor="let sortOption of SortOptions">
+              {{sortOption.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-sm-4">
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Show:</label>
+        <div class="col-sm-6">
+          <select (change)="tableData($event)" class="custom-select">
+            <option *ngFor="let size of tableSizesArr" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" fill="currentColor" class="bi bi-search"
+                viewBox="0 0 16 16">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+        </span>
+    </div>
+    <input id="myInput" [(ngModel)]="SearchTerm" class="form-control"
+        placeholder="Search by order ID" />
+</div>
+
+  <div *ngIf="(sortedAndFilteredList$ | searchPipe: SearchTerm) | async as sortedAndFilteredList">
+<table class="table table-hover" id="ordersTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Total</th>
+            <th>Address</th>
+            <th>Customer</th>
+            <!-- <th *ngIf="isAdmin()">Change status</th> -->
+            <th>Current status</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let order of sortedAndFilteredList| paginate : {
+          itemsPerPage: tableSize,
+          currentPage: page,
+          totalItems: count
+        };" >
+          <td>  
+            {{ order.id }}
+              <!-- <a routerLink="" (click)="getOrderDetails(order)" style="font-weight: bold;">
+                  {{ order.id }}
+              </a> -->
+          </td>
+          <td>{{ order.total }} </td>
+          <!-- <td> {{ order.shippingAdress }}</td>
+          <td > {{ order.identityUser?.userName }}</td> -->
+          <td> {{ order.address }} </td>
+          <td > {{ order.customer }} </td> 
+   
+          <td>
+              <button type="button" (click)="changeStatus(order, 'Pending')" class="btn mr-2" style="background: blueviolet; color: white; width: 120px;" *ngIf="order.status=='In progress'">
+                  Pending
+              </button>
+              <button type="button" class="btn btn btn-warning mr-2" style="color: white; width: 120px;" (click)="changeStatus(order, 'In progress')" *ngIf="order.status=='Pending' || order.status=='Completed' ">
+                  In progress
+              </button>
+              <button type="button" class="btn btn-info mr-2" style="width: 120px;" (click)="changeStatus(order, 'Completed')" *ngIf="order.status=='Sent' || order.status=='In progress'">
+                  Completed
+              </button>
+              <button type="button" class="btn btn-success mr-2" style="width: 120px;" (click)="changeStatus(order, 'Sent')" *ngIf="order.status=='Completed'">
+                  Sent
+              </button>
+          </td>
+
+          <!-- <td [disabled]="!isAdmin()">
+              <button type="button" [disabled]="!isAdmin()" class="btn" style="background: blueviolet; color: white; width: 120px;" *ngIf="order.status=='Pending'">
+                  Pending
+              </button>
+              <button type="button" [disabled]="!isAdmin()" class="btn btn-warning" *ngIf="order.status=='In progress'" style="width: 120px;">
+                  In progress
+              </button>
+              <button type="button"  [disabled]="!isAdmin()"class="btn btn-info" *ngIf="order.status=='Completed'" style="width: 120px;">
+                  Completed
+              </button>
+              <button type="button" [disabled]="!isAdmin()" class="btn btn-success" *ngIf="order.status=='Sent'" style="width: 120px;">
+                  Sent
+              </button>
+              <button type="button" [disabled]="!isAdmin()" class="btn btn-danger" *ngIf="order.status=='Canceled'" style="width: 120px;">
+                  Cancelled
+              </button>
+          </td> -->
+      </tr>
+     
+        
+    </tbody>
+    <div class="d-flex justify-content-center">
+        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="tabSize($event)">
+        </pagination-controls>
+    </div>
+</table>
+</div>

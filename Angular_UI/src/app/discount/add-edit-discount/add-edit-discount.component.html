@@ -1,0 +1,89 @@
+<form name="form" [formGroup]='addEditForm' *ngIf="!savedSuccessful" >
+
+    <div class="form-group row">
+        <!-- <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>    -->
+        <label for="name" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+
+                  <input type="text" id="form3Example3" class="form-control" formControlName="discountName"
+                  placeholder="Enter discount name" [(ngModel)]="name"
+                  aria-describedby="validationServer03Feedback" required [ngClass]="{'is-invalid': name == '' && discountName.errors && (discountName.dirty || discountName.touched),
+                   'is-valid': !discountName.errors && (discountName.dirty || discountName.touched)}" />
+                  <div>
+                    <div style="font-size: medium; font-weight: bold; color: red;" *ngIf="discountName && discountName.errors?.required">
+                        Discount name is reqruired!
+                    </div> 
+                    <div style="font-size: medium; font-weight: bold; color: red;" *ngIf="discountName && discountName.errors?.maxlength ">
+                        Discount name can't be longer than 20 characters!
+                    </div>
+                  </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <!-- <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>    -->
+        <label for="name" class="col-sm-2 col-form-label">Ammount</label>
+        <div class="col-sm-10">
+                  <input type="text" id="form3Example3" class="form-control" formControlName="discountAmmount"
+                  placeholder="Enter discount ammount" [(ngModel)]="ammount"
+                  aria-describedby="validationServer03Feedback" required [ngClass]="{'is-invalid': name == '' && discountAmmount.errors && (discountAmmount.dirty || discountAmmount.touched),
+                   'is-valid': !discountAmmount.errors && (discountAmmount.dirty || discountAmmount.touched)}" />
+                  <div>
+                    <div style="font-size: medium; font-weight: bold; color: red;" *ngIf="discountAmmount && discountAmmount.errors?.required">
+                       Discount ammount is reqruired!
+                    </div> 
+                  </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="discountType" class="col-sm-2 col-form-label">Type</label>
+        <div class="col-sm" id="discountType">
+            <select class="form-select" formControlName="discountType" 
+                [(ngModel)]="selectedDiscountType" (change)="discountTypeChanged($event)"
+                aria-describedby="validationServer03Feedback"
+                [ngClass]="{ 'is-invalid': discountType.errors && (discountType || discountType.dirty || discountType.touched) , 
+                'is-valid': !discountType.errors && (discountType.dirty || discountType.touched)}">
+                <option value="" style="text-align: center;">-- Select category --</option>
+                <option value="Regular"> Regular </option>
+                <option value="Loyalty"> Loyalty </option>
+            </select>
+            <div style="font-size: medium; font-weight: bold; color: red;" *ngIf="discountType && discountType.errors?.required">
+                Discount type is reqruired!
+             </div> 
+        </div>
+    </div>
+</form>
+
+<div style="display: flex; justify-content:right" *ngIf="!savedSuccessful">
+    <button (click)="addDiscount()" [disabled]="addEditForm.invalid" *ngIf="discount.id==0"
+        class="btn btn-outline-success mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+          </svg>
+          Save
+    </button>
+    <button (click)="updateDiscount()" [disabled]="addEditForm.invalid" *ngIf="discount.id!=0"
+        class="btn btn-outline-success mr-2" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+          </svg>
+          Save
+    </button>
+    <button (click)="closeClick()" class="btn btn-outline-danger" data-bs-dismiss="modal" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+            <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+          </svg>
+        Cancel
+    </button>
+</div>
+
+<div class="container" *ngIf="savedSuccessful">
+    <p *ngIf="savedSuccessful">
+        Changes saved sucessfully
+    </p>
+    <button (click)="okClick()" *ngIf="savedSuccessful" class="btn btn-primary btn-lg btn-block"  data-bs-dismiss="modal" >
+      Ok
+</button>
+</div>
